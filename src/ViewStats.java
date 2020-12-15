@@ -5,6 +5,8 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import java.awt.Color;
 import javax.swing.UIManager;
+import java.awt.Toolkit;
+import java.nio.file.Paths;
 
 public class ViewStats {
 
@@ -37,7 +39,9 @@ public class ViewStats {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		String absolutePath = Paths.get("").toAbsolutePath().toString();
 		frmPomodoro = new JFrame();
+		frmPomodoro.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
 		frmPomodoro.setTitle("Pomodoro");
 		frmPomodoro.setBounds(100, 100, 435, 150);
 		frmPomodoro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

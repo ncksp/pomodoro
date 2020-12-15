@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -6,13 +7,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
 import javax.swing.ImageIcon;
 import java.awt.Color;
+import java.awt.Toolkit;
+import java.nio.file.Paths;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class SecondFrame extends JFrame {
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
 	private JPanel contentPane;
 
 	/**
@@ -35,6 +36,9 @@ public class SecondFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public SecondFrame() {
+		String absolutePath = Paths.get("").toAbsolutePath().toString();
+		setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
+		setTitle("Pomodoro");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -44,14 +48,18 @@ public class SecondFrame extends JFrame {
 		contentPane.setLayout(null);
 		
 		JButton btnNewButton = new JButton("");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+			}
+		});
 		btnNewButton.setBackground(new Color(0, 128, 128));
-		btnNewButton.setIcon(new ImageIcon("D:\\FLA\\res\\pause.png"));
+		btnNewButton.setIcon(new ImageIcon(absolutePath+"/res/pause.png"));
 		btnNewButton.setBounds(105, 110, 81, 57);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("");
 		btnNewButton_1.setBackground(new Color(0, 139, 139));
-		btnNewButton_1.setIcon(new ImageIcon("D:\\FLA\\res\\skip.png"));
+		btnNewButton_1.setIcon(new ImageIcon(absolutePath+"/res/skip.png"));
 		btnNewButton_1.setBounds(221, 110, 81, 57);
 		contentPane.add(btnNewButton_1);
 		
