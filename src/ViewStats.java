@@ -41,6 +41,7 @@ public class ViewStats {
 	private void initialize() {
 		String absolutePath = Paths.get("").toAbsolutePath().toString();
 		frmPomodoro = new JFrame();
+		frmPomodoro.setResizable(false);
 		frmPomodoro.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
 		frmPomodoro.setTitle("Pomodoro");
 		frmPomodoro.setBounds(100, 100, 435, 150);

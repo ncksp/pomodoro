@@ -1,7 +1,9 @@
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
+import java.awt.Font;
 
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.JButton;
@@ -24,6 +26,7 @@ public class SecondFrame extends JFrame {
 			public void run() {
 				try {
 					SecondFrame frame = new SecondFrame();
+					frame.setResizable(false);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -67,5 +70,35 @@ public class SecondFrame extends JFrame {
 		button.setBackground(new Color(0, 139, 139));
 		button.setBounds(317, 228, 115, 25);
 		contentPane.add(button);
+		
+		//Timer Text
+		JLabel TimerText = new JLabel("");
+		TimerText.setText("24:57");
+		TimerText.setBounds(170, 50, 115, 25);
+		TimerText.setFont(new Font(TimerText.getFont().getName(),TimerText.getFont().getStyle(),30));
+		contentPane.add(TimerText);
+		
+		//Dot Area
+		JLabel JlblDot1 = new JLabel("");
+		JlblDot1.setIcon(new ImageIcon(absolutePath+"/res/outline_dot.png"));
+		JlblDot1.setBounds(153, 188, 18, 18);
+		contentPane.add(JlblDot1);
+		
+		JLabel JlblDot2 = new JLabel("");
+		JlblDot2.setIcon(new ImageIcon(absolutePath+"/res/outline_dot.png"));
+		JlblDot2.setBounds(213, 188, 18, 18);
+		contentPane.add(JlblDot2);
+		
+		JLabel JlblDot3 = new JLabel("");
+		JlblDot3.setIcon(new ImageIcon(absolutePath+"/res/outline_dot.png"));
+		JlblDot3.setBounds(183, 188, 18, 18);
+		contentPane.add(JlblDot3);
+		
+		JLabel JlblDot4 = new JLabel("");
+		JlblDot4.setIcon(new ImageIcon(absolutePath+"/res/outline_dot.png"));
+		JlblDot4.setBounds(241, 188, 18, 18);
+		contentPane.add(JlblDot4);
+		
+		//Dot End
 	}
 }
