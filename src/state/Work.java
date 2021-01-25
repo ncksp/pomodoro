@@ -11,7 +11,7 @@ public class Work extends PomodoroState{
 	
 	@Override
 	protected int getMinute() {
-		return 1;
+		return 25;
 	}
 
 	@Override
@@ -26,7 +26,7 @@ public class Work extends PomodoroState{
 	
 	@Override
 	protected PomodoroState next() {
-		if(position < 3)
+		if(position < 4)
 			return new Break(position);
 		
 		return new LongBreak(); 

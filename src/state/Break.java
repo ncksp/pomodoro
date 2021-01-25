@@ -11,7 +11,7 @@ public class Break extends PomodoroState{
 	
 	@Override
 	protected int getMinute() {
-		return 1;
+		return 5;
 	}
 
 	@Override

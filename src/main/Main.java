@@ -15,20 +15,22 @@ import javax.swing.Timer;
 import state.Pomodoro;
 
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 public class Main {
-
-	public JFrame frmPomodoro = new JFrame();
+	private final int SECOND = 60;
+	private JFrame frmPomodoro = new JFrame();
+	private JPanel dotsPanel = new JPanel();
 	private boolean pause = false;
 	private Timer timer;
 	private Pomodoro pomodoro = new Pomodoro();
-	private int workPos = 1;
+	private int workPos = 0;
 	JLabel TimerText = new JLabel("");
 	JButton skipButton = new JButton("");
 	JButton pauseButton = new JButton("");
 	String absolutePath = Paths.get("").toAbsolutePath().toString();
 	
-	int min ,sec = 10;
+	int min ,sec = SECOND;
 	int[][] dotCoordinates = {
 		{153,188,18,18}, {183,188,18,18}, {213,188,18,18},{243,188,18,18},
 	}; 
@@ -68,6 +70,8 @@ public class Main {
 		skipButton.setVisible(true);
 		pauseButton.setBounds(105, 110, 81, 57);
 		frmPomodoro.getContentPane().setBackground(color);
+
+		dotsPanel.setBackground(color);
 	}
 	
 	private void initializeWorkState(Color color) {
@@ -76,23 +80,29 @@ public class Main {
 		pauseButton.setBounds(163, 110, 81, 57);
 		frmPomodoro.getContentPane().setBackground(color);
 		
-		if(workPos > 4) workPos = 1;
+		if(workPos >= 4) workPos = 0;
+	
 		
-		generateDots();
+		generateDots(color);
 	}
 	
-	private void generateDots() {
+	private void generateDots(Color color) {
+		dotsPanel.removeAll();
+		dotsPanel.setBackground(color);
+		dotsPanel.setBounds(150, 188, 100, 25);
+		
 		for (int i = 0; i < dotCoordinates.length; i++) {
 			JLabel dot = new JLabel("");
-			
-			if(i < workPos)
+			if(i <= workPos)
 				dot.setIcon(new ImageIcon(absolutePath+"/res/twotone_dot.png"));
 			else
 				dot.setIcon(new ImageIcon(absolutePath+"/res/outline_dot.png"));
 			
 			dot.setBounds(dotCoordinates[i][0], dotCoordinates[i][1], dotCoordinates[i][2], dotCoordinates[i][3]);
-			frmPomodoro.getContentPane().add(dot);
+			dotsPanel.add(dot);
 		}
+		
+		frmPomodoro.add(dotsPanel);
 	}
 
 	private void initialize() {
@@ -110,6 +120,14 @@ public class Main {
 				pausePlayButton(pauseButton, absolutePath);	
 			}
 		});		
+		
+		skipButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				min = sec = 0;
+			}
+		});
+		
 		frmPomodoro.getContentPane().add(pauseButton);
 		
 		
@@ -124,7 +142,8 @@ public class Main {
 		TimerText.setFont(new Font(TimerText.getFont().getName(),TimerText.getFont().getStyle(),30));
 		frmPomodoro.getContentPane().add(TimerText);
 		
-		generateDots();
+		
+		generateDots(Color.RED);
 		
 		JButton btnNewButton_1 = new JButton("view stats");
 		btnNewButton_1.setBackground(Color.RED);
@@ -141,25 +160,27 @@ public class Main {
 
 	private void start() {
 		min = pomodoro.getMinute() - 1;
-		timer = new Timer(100, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(min <= 0 && sec == 0) {
 					pomodoro.next();
 					min = pomodoro.getMinute();
+					
+					if(!pomodoro.isBreak())
+						initializeWorkState(pomodoro.getBackgroundColor());
+					
+					if(pomodoro.isBreak())
+						initializeBreakState(pomodoro.getBackgroundColor());
 				}
 				
-				if(!pomodoro.isBreak())
-					initializeWorkState(pomodoro.getBackgroundColor());
-				
-				if(pomodoro.isBreak())
-					initializeBreakState(pomodoro.getBackgroundColor());
-
 				if(sec == 0) {
-					sec = 60;
+					sec = SECOND;
 					min --;
 				}
+				
 				sec --;
+				
 				TimerText.setText(min+":"+sec);
 			}
 		});
