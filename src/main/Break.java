@@ -15,7 +15,7 @@ import java.nio.file.Paths;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class SecondFrame extends JFrame {
+public class Break extends JFrame {
 
 	private JPanel contentPane;
 
@@ -26,7 +26,7 @@ public class SecondFrame extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					SecondFrame frame = new SecondFrame();
+					Break frame = new Break();
 					frame.setResizable(false);
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -39,7 +39,7 @@ public class SecondFrame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public SecondFrame() {
+	public Break() {
 		String absolutePath = Paths.get("").toAbsolutePath().toString();
 		setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
 		setTitle("Pomodoro");
