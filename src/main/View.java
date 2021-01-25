@@ -1,3 +1,4 @@
+package main;
 import java.awt.EventQueue;
 import java.awt.Font;
 
@@ -27,7 +28,7 @@ import javax.swing.JLabel;
 
 public class View {
 
-	publicu JFrame frmPomodoro;
+	public JFrame frmPomodoro;
 	private final Action action = new SwingAction();
 	public static boolean PlayPauseStatus;
 	 
