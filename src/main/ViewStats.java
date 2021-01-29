@@ -3,98 +3,68 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 
 import observer.Observer;
+import proxy.ReadLogProxy;
 
 import java.awt.Toolkit;
 import java.nio.file.Paths;
 import java.util.Date;
 
 public class ViewStats implements Observer {
-
-	private JFrame frmPomodoro;
-
-	/**
-	 * Create the application.
-	 */
-	public ViewStats() {
-		initialize();
+	
+	private JFrame frm = new JFrame();
+	private static ViewStats stats;
+	private String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
+	private int[] counts = {0,0,0,0,0,0,0};
+	private int totalData = 0;
+	
+	public static ViewStats getInstance() {
+		if(stats == null) stats = new ViewStats();
+		
+		return stats;
 	}
+	
+	private ViewStats() {}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
+	protected void initialize() {
+		ReadLogProxy logProxy = new ReadLogProxy();
+		int[] result = logProxy.readData(totalData);
+		
+		if(result != null) {
+			counts = result;
+			totalData = logProxy.getTotalData();
+		}
+		
+		logProxy = null;
+		
 		String absolutePath = Paths.get("").toAbsolutePath().toString();
-		frmPomodoro = new JFrame();
-		frmPomodoro.setVisible(true);
-		frmPomodoro.setResizable(false);
-		frmPomodoro.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
-		frmPomodoro.setTitle("Pomodoro");
-		frmPomodoro.setBounds(100, 100, 435, 150);
-		frmPomodoro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frmPomodoro.getContentPane().setLayout(null);
+		frm.setVisible(true);
+		frm.setResizable(false);
+		frm.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
+		frm.setTitle("Pomodoro");
+		frm.setBounds(100, 100, 450, 150);
+		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frm.getContentPane().setLayout(null);
 		
-		JLabel lblNewLabel = new JLabel("Tue");
-		lblNewLabel.setBounds(12, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblNewLabel);
+		int firstX = 12;
+		for (int i = 0; i < 7; i++) {
+			JLabel lblNewLabel = new JLabel(days[i]);
+			JLabel label = new JLabel(String.valueOf(counts[i]));
+			
+			lblNewLabel.setBounds(firstX, 26, 30, 16);
+			label.setBounds(firstX, 43, 30, 16);
+			
+			frm.getContentPane().add(label);
+			frm.getContentPane().add(lblNewLabel);
+			
+			firstX += 58;
+		}
 		
-		JLabel lblWed = new JLabel("Wed");
-		lblWed.setBounds(70, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblWed);
-		
-		JLabel lblThu = new JLabel("Thu");
-		lblThu.setBounds(128, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblThu);
-		
-		JLabel lblFri = new JLabel("Fri");
-		lblFri.setBounds(186, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblFri);
-		
-		JLabel lblSat = new JLabel("Sat");
-		lblSat.setBounds(244, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblSat);
-		
-		JLabel lblMo = new JLabel("Mon");
-		lblMo.setBounds(302, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblMo);
-		
-		JLabel lblSun = new JLabel("Sun");
-		lblSun.setBounds(360, 26, 30, 16);
-		frmPomodoro.getContentPane().add(lblSun);
-		
-		JLabel label = new JLabel("0");
-		label.setBounds(12, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label);
-		
-		JLabel label_1 = new JLabel("0");
-		label_1.setBounds(70, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_1);
-		
-		JLabel label_2 = new JLabel("0");
-		label_2.setBounds(128, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_2);
-		
-		JLabel label_3 = new JLabel("0");
-		label_3.setBounds(186, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_3);
-		
-		JLabel label_4 = new JLabel("0");
-		label_4.setBounds(244, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_4);
-		
-		JLabel label_5 = new JLabel("0");
-		label_5.setBounds(302, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_5);
-		
-		JLabel label_6 = new JLabel("0");
-		label_6.setBounds(360, 43, 30, 16);
-		frmPomodoro.getContentPane().add(label_6);
-		
-		frmPomodoro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
 	@Override
 	public void update(Date time) {
-		// TODO Auto-generated method stub
-		
+		totalData++;
+		System.out.println(time);
 	}
 }

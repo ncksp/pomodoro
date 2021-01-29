@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
 
+import observer.Log;
 import state.Pomodoro;
 
 public class Main {
@@ -15,10 +16,11 @@ public class Main {
 	private boolean pause = false;
 	private Timer timer;
 	private Pomodoro pomodoro = new Pomodoro();
-	private Logging logging = new Logging();
+	private Log logging = new Log();
 	private ViewStats stats = null;
 	String absolutePath = Paths.get("").toAbsolutePath().toString();
 	int min, sec = SECOND;
+	
 	private MainUI ui;
 	
 	public static void main(String[] args) {
@@ -62,6 +64,7 @@ public class Main {
 		ui.viewStatsButton.addActionListener(new ActionListener() {	
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				stats = null;
 				showStats();
 			}
 		});
@@ -69,15 +72,15 @@ public class Main {
 	}
 	
 	private void showStats() {
-		if(stats != null) return;
+		stats = ViewStats.getInstance();
+		stats.initialize();
 		
-		stats = new ViewStats();
 		logging.addObserver(stats);
 	}
 	
 	private void start() {
 		min = pomodoro.getMinute() - 1;
-		timer = new Timer(1000, new ActionListener() {
+		timer = new Timer(1, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(min <= 0 && sec == 0) {
