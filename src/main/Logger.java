@@ -15,8 +15,8 @@ public class Logger implements Observer {
 	@Override
 	public void update(Date time) {
 		try {
-			FileWriter writer = new FileWriter("log.csv");
-			writer.append(formatter.format(new Timestamp(time.getTime()))+",Work");
+			FileWriter writer = new FileWriter("log.csv", true);
+			writer.append(formatter.format(new Timestamp(time.getTime()))+",Work\n");
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("Failed to write Work Log");

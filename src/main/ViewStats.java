@@ -1,22 +1,30 @@
 package main;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 
+import factory.LogDataFactory;
 import observer.Observer;
 import proxy.ReadLogProxy;
 
 import java.awt.Toolkit;
 import java.nio.file.Paths;
+import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class ViewStats implements Observer {
 	
 	private JFrame frm = new JFrame();
+	private JPanel counterPanel = new JPanel();
 	private static ViewStats stats;
-	private String[] days = {"Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"};
-	private int[] counts = {0,0,0,0,0,0,0};
+	private String[] days = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
+	private int[] logs = {0,0,0,0,0,0,0};
 	private int totalData = 0;
 	
+	public static void main(String[] args) {
+		new ViewStats();
+	}
 	public static ViewStats getInstance() {
 		if(stats == null) stats = new ViewStats();
 		
@@ -30,7 +38,7 @@ public class ViewStats implements Observer {
 		int[] result = logProxy.readData(totalData);
 		
 		if(result != null) {
-			counts = result;
+			logs = result;
 			totalData = logProxy.getTotalData();
 		}
 		
@@ -42,29 +50,42 @@ public class ViewStats implements Observer {
 		frm.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
 		frm.setTitle("Pomodoro");
 		frm.setBounds(100, 100, 450, 150);
-		frm.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frm.getContentPane().setLayout(null);
 		
-		int firstX = 12;
-		for (int i = 0; i < 7; i++) {
-			JLabel lblNewLabel = new JLabel(days[i]);
-			JLabel label = new JLabel(String.valueOf(counts[i]));
-			
-			lblNewLabel.setBounds(firstX, 26, 30, 16);
-			label.setBounds(firstX, 43, 30, 16);
-			
-			frm.getContentPane().add(label);
-			frm.getContentPane().add(lblNewLabel);
-			
-			firstX += 58;
-		}
+		generateLogCount();
 		
 		frm.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 	}
 
+	private void generateLogCount() {
+		counterPanel.setBounds(0, 50, 200, 200);
+		counterPanel.removeAll();
+		int firstX = 12;
+		for (int i = 0; i < 7; i++) {
+			JLabel lblNewLabel = new JLabel(days[i]);
+			JLabel label = new JLabel(String.valueOf(logs[i]));
+			
+			lblNewLabel.setBounds(firstX, 26, 30, 16);
+			label.setBounds(firstX, 43, 30, 16);
+			
+			counterPanel.add(label);
+			counterPanel.add(lblNewLabel);
+			
+			firstX += 28;
+		}
+		frm.repaint();
+		frm.add(counterPanel);
+	}
+	
 	@Override
 	public void update(Date time) {
 		totalData++;
-		System.out.println(time);
+		String date = new SimpleDateFormat("yyyy-MM-dd HH:mm:ssX").format(new Timestamp(time.getTime()));
+		int index = LogDataFactory.convertToDay(date);
+		
+		if(index < 0) return;
+	
+		logs[index] += 1;
+
+		generateLogCount();
 	}
 }
