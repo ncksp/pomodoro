@@ -16,7 +16,7 @@ import java.util.Date;
 public class ViewStats implements Observer {
 	
 	private JFrame frm = new JFrame();
-	private JPanel counterPanel = new JPanel();
+	private JPanel counterPanel = new JPanel(null);
 	private static ViewStats stats;
 	private String[] days = {"Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"};
 	private int[] logs = {0,0,0,0,0,0,0};
@@ -57,7 +57,7 @@ public class ViewStats implements Observer {
 	}
 
 	private void generateLogCount() {
-		counterPanel.setBounds(0, 50, 200, 200);
+		counterPanel.setBounds(0, 0, 400, 200);
 		counterPanel.removeAll();
 		int firstX = 12;
 		for (int i = 0; i < 7; i++) {

@@ -80,7 +80,7 @@ public class Main {
 	
 	private void start() {
 		min = pomodoro.getMinute() - 1;
-		timer = new Timer(1, new ActionListener() {
+		timer = new Timer(1000, new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				if(min <= 0 && sec == 0) {
