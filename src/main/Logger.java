@@ -1,5 +1,7 @@
 package main;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -12,9 +14,14 @@ public class Logger implements Observer {
     
 	@Override
 	public void update(Date time) {
-        System.out.println(formatter.format(new Timestamp(time.getTime())));
-		// TODO Auto-generated method stub
-		
+		try {
+			FileWriter writer = new FileWriter("log.csv");
+			writer.append(formatter.format(new Timestamp(time.getTime()))+",Work");
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("Failed to write Work Log");
+			e.printStackTrace();
+		}
 	}
 
 }
