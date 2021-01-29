@@ -1,30 +1,16 @@
 package main;
-import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+
+import observer.Observer;
+
 import java.awt.Toolkit;
 import java.nio.file.Paths;
+import java.util.Date;
 
-public class ViewStats {
+public class ViewStats implements Observer {
 
 	private JFrame frmPomodoro;
-
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ViewStats window = new ViewStats();
-					window.frmPomodoro.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the application.
@@ -39,6 +25,7 @@ public class ViewStats {
 	private void initialize() {
 		String absolutePath = Paths.get("").toAbsolutePath().toString();
 		frmPomodoro = new JFrame();
+		frmPomodoro.setVisible(true);
 		frmPomodoro.setResizable(false);
 		frmPomodoro.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
 		frmPomodoro.setTitle("Pomodoro");
@@ -101,5 +88,13 @@ public class ViewStats {
 		JLabel label_6 = new JLabel("0");
 		label_6.setBounds(360, 43, 30, 16);
 		frmPomodoro.getContentPane().add(label_6);
+		
+		frmPomodoro.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+	}
+
+	@Override
+	public void update(Date time) {
+		// TODO Auto-generated method stub
+		
 	}
 }

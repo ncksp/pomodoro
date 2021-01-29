@@ -1,6 +1,7 @@
 package main;
 
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.Toolkit;
 import java.nio.file.Paths;
@@ -18,6 +19,7 @@ public class MainUI {
 	JLabel TimerText = new JLabel("");
 	JButton skipButton = new JButton("");
 	JButton pauseButton = new JButton("");
+	JButton viewStatsButton =new JButton("view stats");
 	String absolutePath = Paths.get("").toAbsolutePath().toString();
 	
 	int[][] dotCoordinates = {
@@ -68,6 +70,7 @@ public class MainUI {
 	}
 	
 	protected void initialize() {
+		frmPomodoro.setLocationRelativeTo(null);
 		frmPomodoro.getContentPane().setBackground(Color.RED);
 		frmPomodoro.getContentPane().setLayout(null);
 		
@@ -88,16 +91,17 @@ public class MainUI {
 		skipButton.setVisible(false);
 		frmPomodoro.add(skipButton);
 		
-		JButton btnNewButton_1 = new JButton("view stats");
-		btnNewButton_1.setBackground(Color.RED);
-		btnNewButton_1.setBounds(317, 228, 115, 25);	
-		frmPomodoro.getContentPane().add(btnNewButton_1);
+		viewStatsButton.setBackground(Color.RED);
+		viewStatsButton.setBounds(317, 228, 115, 25);	
+		frmPomodoro.add(viewStatsButton);
 	
 		frmPomodoro.setTitle("Pomodoro");
 		frmPomodoro.setIconImage(Toolkit.getDefaultToolkit().getImage(absolutePath+"/res/tomato.png"));
-		frmPomodoro.setBounds(100, 100, 450, 300);
+		frmPomodoro.setSize(450, 300);
 		frmPomodoro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
+		Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+		frmPomodoro.setLocation(dim.width/2-frmPomodoro.getSize().width/2, dim.height/2-frmPomodoro.getSize().height/2);
+
 	}
 	
 	void setTimer(int minutes, int second){

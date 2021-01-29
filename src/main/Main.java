@@ -1,7 +1,9 @@
 package main;
 import javax.swing.JButton;
+
 import java.awt.event.ActionListener;
 import java.nio.file.Paths;
+import java.util.Date;
 import java.awt.event.ActionEvent;
 import javax.swing.ImageIcon;
 import javax.swing.Timer;
@@ -13,6 +15,8 @@ public class Main {
 	private boolean pause = false;
 	private Timer timer;
 	private Pomodoro pomodoro = new Pomodoro();
+	private Logging logging = new Logging();
+	private ViewStats stats = null;
 	String absolutePath = Paths.get("").toAbsolutePath().toString();
 	int min, sec = SECOND;
 	private MainUI ui;
@@ -23,6 +27,7 @@ public class Main {
 
 	public Main() {
 		ui = new MainUI();
+		logging.addObserver(new Logger());
 		initialize();
 	}
 	
@@ -52,11 +57,24 @@ public class Main {
 			public void actionPerformed(ActionEvent e) {
 				min = sec = 0;
 			}
-		});		
+		});	
 		
+		ui.viewStatsButton.addActionListener(new ActionListener() {	
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				showStats();
+			}
+		});
 		start();
 	}
-
+	
+	private void showStats() {
+		if(stats != null) return;
+		
+		stats = new ViewStats();
+		logging.addObserver(stats);
+	}
+	
 	private void start() {
 		min = pomodoro.getMinute() - 1;
 		timer = new Timer(1000, new ActionListener() {
@@ -69,8 +87,10 @@ public class Main {
 					if(!pomodoro.isBreak())
 						ui.initializeWorkState(pomodoro.getBackgroundColor());
 					
-					if(pomodoro.isBreak())
+					if(pomodoro.isBreak()) {
+						logging.broadcast(new Date());
 						ui.initializeBreakState(pomodoro.getBackgroundColor());
+					}
 				}
 				
 				if(sec == 0) {
